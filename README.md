@@ -1,5 +1,5 @@
-# Tocket (a TOTK sys-cricket client)
-Tocket is a web-based client that runs on your computer and communicates with your homebrewed switch via the local network. Your switch must be running the homebrew tool sys-cricket. It is designed only for the game Tears of the Kingdom and will establish streams of data for the following properties:
+# Tockit (a TOTK sys-cricket client)
+Tockit is a web-based client that runs on your computer and communicates with your homebrewed switch via the local network. Your switch must be running the homebrew tool sys-cricket. It is designed only for the game Tears of the Kingdom and will establish streams of data for the following properties:
 - Current and max health
 - Current and bonus stamina
 - The complete player transformation matrix
@@ -31,7 +31,7 @@ CRICKET_SERVER_PORT=[main connection port of sys-cricket, default is 3000]
 CRICKET_SERVER_ADDRESS=[the IP address of your switch]
 ```
 
-To run Tocket, start the repeater server with `npm run server` then open your favorite browser and visit `http://localhost:[LISTEN_PORT]`.
+To run Tockit, start the repeater server with `npm run server` then open your favorite browser and visit `http://localhost:[LISTEN_PORT]`.
 
 ## Developers
 Both the client and server scripts have dev variants (`client:dev` and `server:dev`).  If you run these, it will monitor files for changes and restart or re-package automatically. You will still need to refresh your browser to see the client changes.
