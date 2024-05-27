@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Box, Stack } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { grey } from '@mui/material/colors'
+
 import Monospaced from './Monospaced.jsx'
 
 export default function AngleWidget ({
@@ -12,6 +15,8 @@ export default function AngleWidget ({
 }) {
   const canvasRef = React.useRef(null)
   const [context, setContext] = React.useState(null)
+
+  const theme = useTheme()
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -51,16 +56,23 @@ export default function AngleWidget ({
       context.translate(context.canvas.width / 2, context.canvas.height / 2)
 
       // Draw circle
-      context.strokeStyle = 'grey'
+      context.strokeStyle = theme.palette.mode === 'dark' ? 'grey' : 'lightgrey'
+      context.lineWidth = 3
+      context.fillStyle = theme.palette.mode === 'dark' ? grey[900] : 'white'
       context.beginPath()
       context.arc(0, 0, context.canvas.width / 2 - 2, 0, 2 * Math.PI)
       context.stroke()
+      context.fill()
 
-      context.rotate(angle - Math.PI / 2)
-      drawArrow(context, 4, 'lightgrey')
+      context.rotate(angle + Math.PI / 2)
+      drawArrow(
+        context,
+        4,
+        theme.palette.mode === 'dark' ? 'lightgrey' : 'black'
+      )
       context.restore()
     }
-  }, [angle, context])
+  }, [angle, context, theme.palette.mode])
 
   return (
     <Stack {...rest}>

@@ -13,14 +13,11 @@ import {
 } from '@mui/material'
 
 import { statusShape } from '../data/PropShapes.js'
-import { getGameInfoFromTitleID } from '../data/TitleIDLookup.js'
+import { useTitleInfo } from '../data/useTitleInfo.js'
 
 export default function GameInfo ({ statusData }) {
   // Attempt to lookup game info from the title ID
-  const [gameInfo, setGameInfo] = React.useState(null)
-  React.useEffect(() => {
-    setGameInfo(getGameInfoFromTitleID(statusData?.titleId))
-  }, [statusData?.titleId])
+  const gameInfo = useTitleInfo(statusData?.titleId)
 
   return (
     <Card sx={{ display: 'flex' }} elevation={3}>

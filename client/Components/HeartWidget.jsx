@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 export default function HeartWidget ({
   filled = false,
@@ -12,6 +13,8 @@ export default function HeartWidget ({
 }) {
   const canvasRef = React.useRef(null)
   const [context, setContext] = React.useState(null)
+
+  const theme = useTheme()
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -28,7 +31,7 @@ export default function HeartWidget ({
 
       // Filled Heart
       if (filled) {
-        context.fillStyle = 'red'
+        context.fillStyle = theme.palette.mode === 'dark' ? 'darkred' : 'red'
         context.fillText('♥', 2, context.canvas.height - 2)
 
         // Quarter hearts
@@ -51,12 +54,13 @@ export default function HeartWidget ({
       }
 
       // Heart outline
-      context.strokeStyle = 'white'
+      context.strokeStyle =
+        theme.palette.mode === 'dark' ? 'lightgrey' : 'darkgrey'
       context.strokeText('♥', 2, context.canvas.height - 2)
 
       context.restore()
     }
-  }, [context, filled, quarters])
+  }, [context, filled, theme.palette.mode, quarters])
 
   return (
     <Box textAlign={'center'} {...rest}>

@@ -13,16 +13,23 @@ function a11yProps (index) {
   }
 }
 
-export default function StatsWidget ({ data }) {
+export default function StatsWidget ({
+  health = 0,
+  maxHealth = 12,
+  bonusHealth = 0,
+  stamina = 0,
+  maxStamina = 1000,
+  bonusStamina = 0
+}) {
   const [curTab, setCurTab] = React.useState(0)
   const handleChange = (event, newValue) => {
     setCurTab(newValue)
   }
 
   // Calculate the number of hearts to display
-  const hearts = Math.ceil(data?.currentHealth / 4) ?? 0
-  const quarters = data?.currentHealth % 4 ?? 0
-  const maxHearts = data?.maxHealth / 4 ?? 3
+  const hearts = Math.ceil(health / 4) ?? 0
+  const quarters = health % 4 ?? 0
+  const maxHearts = maxHealth / 4 ?? 3
 
   return (
     <Paper sx={{ width: '100%', p: 1 }} elevation={3}>
@@ -47,10 +54,10 @@ export default function StatsWidget ({ data }) {
       </TabPanel>
       <TabPanel curTab={curTab} name="stats" index={1}>
         <List>
-          <ListItem>{`Health: ${data?.currentHealth / 4} hearts`}</ListItem>
-          <ListItem>{`Max Health: ${data?.maxHealth / 4} hearts`}</ListItem>
-          <ListItem>{`Stamina: ${data?.currentStamina}`}</ListItem>
-          <ListItem>{`Bonus Stamina: ${data?.bonusStamina}`}</ListItem>
+          <ListItem>{`Health: ${health / 4} hearts`}</ListItem>
+          <ListItem>{`Max Health: ${maxHealth / 4} hearts`}</ListItem>
+          <ListItem>{`Stamina: ${stamina}`}</ListItem>
+          <ListItem>{`Bonus Stamina: ${bonusStamina}`}</ListItem>
         </List>
       </TabPanel>
     </Paper>
@@ -58,10 +65,10 @@ export default function StatsWidget ({ data }) {
 }
 
 StatsWidget.propTypes = {
-  data: PropTypes.shape({
-    currentHealth: PropTypes.number,
-    maxHealth: PropTypes.number,
-    currentStamina: PropTypes.number,
-    bonusStamina: PropTypes.number
-  })
+  health: PropTypes.number,
+  maxHealth: PropTypes.number,
+  bonusHealth: PropTypes.number,
+  stamina: PropTypes.number,
+  maxStamina: PropTypes.number,
+  bonusStamina: PropTypes.number
 }

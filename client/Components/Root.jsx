@@ -33,7 +33,14 @@ export default function Root (props) {
         />
 
         <Stack spacing={2}>
-          <StatsWidget data={socketData} />
+          <StatsWidget
+            health={socketData?.currentHealth?.[0]}
+            bonusHealth={socketData?.bonusHealth?.[0]}
+            maxHealth={socketData?.maxHealth?.[0]}
+            stamina={socketData?.currentStamina?.[0]}
+            bonusStamina={socketData?.bonusStamina?.[0]}
+            maxStamina={socketData?.maxStamina?.[0]}
+          />
           <TransformWidget dataMatrix={socketData?.currentPlayerTransform} />
           {socketData?.status && <GameInfo statusData={socketData?.status} />}
         </Stack>
