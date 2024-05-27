@@ -14,6 +14,17 @@ The information is interpreted and displayed in a user-friendly way showing the 
 
 Coordinates, speed, and heading are all displayed with 3 digits of precision.  Coordinates and heading are updated at 30fps while speed is calculated every 0.5 seconds.
 
+## Known Issues
+This is in active development so be prepared for things to break!  Here are some known issues and things to watch out for.
+- sys-cricket seems to have a memory leak and stops functioning after about 5 minutes (the OS thread becomes unresponsive and you have to hard-reset your switch)
+- sys-cricket cannot dynamically reconnect with the bridge so if you restart the bridge, you will likely need to restart sys-cricket too
+- It's easy for all the ports to get confusing! If you have them wrong or they don't agree between the sysmodule and the bridge, it won't work.
+  - LISTEN_PORT: The local HTTP server listens on this port and you use it in the URL to access the client
+  - CRICKET_SERVER_PORT: The main port that sys-cricket is listening on for UDP messages to configure the streams
+  - NXLINK_PORT: A port that the bridge listens on to receive all logging from sys-cricket.
+  - The UDP streaming port: A random open port on your computer for the streaming of data (chosen automatically)
+- All logging messages received from sys-cricket will be echoed to your terminal (via the nxlink port). Look here for hints as to what might be going wrong.
+
 ## How to Use
 You need a homebrew switch running the latest version of Atmosphere (beyond the scope of this doc).  Install node.js on your computer (the latest LTS version should work fine).
 
