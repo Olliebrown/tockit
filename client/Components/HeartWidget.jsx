@@ -29,8 +29,6 @@ export default function HeartWidget ({
       const textSize = ctx.measureText('♥')
       const xBorder = (ctx.canvas.width - textSize.width) / 2
       const yBorder = (ctx.canvas.height - textSize.actualBoundingBoxAscent) / 2
-      console.log('xBorder:', xBorder)
-      console.log('yBorder:', yBorder)
 
       // Filled Heart
       if (filled) {

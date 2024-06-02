@@ -42907,8 +42907,6 @@ Please use another name.` : formatMuiErrorMessage(18));
         const textSize = ctx.measureText("\u2665");
         const xBorder = (ctx.canvas.width - textSize.width) / 2;
         const yBorder = (ctx.canvas.height - textSize.actualBoundingBoxAscent) / 2;
-        console.log("xBorder:", xBorder);
-        console.log("yBorder:", yBorder);
         if (filled) {
           ctx.fillStyle = fillColor;
           ctx.fillText("\u2665", xBorder, ctx.canvas.height - yBorder);
