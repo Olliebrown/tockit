@@ -41,7 +41,10 @@ export default function Root (props) {
             bonusStamina={socketData?.bonusStamina?.[0]}
             maxStamina={socketData?.maxStamina?.[0]}
           />
-          <TransformWidget dataMatrix={socketData?.currentPlayerTransform} />
+          <TransformWidget
+            playerMatrix={socketData?.currentPlayerTransform}
+            havokMatrix={socketData?.currentHavokMatrix}
+          />
           {socketData?.status && <GameInfo statusData={socketData?.status} />}
         </Stack>
       </Container>

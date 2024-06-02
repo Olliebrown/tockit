@@ -7,72 +7,35 @@ import { grey } from '@mui/material/colors'
 
 import Monospaced from './Monospaced.jsx'
 
+import useCanvas from '../data/useCanvas.js'
+import { drawArrow, drawCircle } from '../data/canvasHelpers.js'
+
 export default function AngleWidget ({
   angle = 0,
   width = 100,
   height = 100,
   ...rest
 }) {
-  const canvasRef = React.useRef(null)
-  const [context, setContext] = React.useState(null)
-
   const theme = useTheme()
+  const angleRender = React.useCallback(
+    (ctx) => {
+      // Pick colors
+      const circleStroke = theme.palette.mode === 'dark' ? 'grey' : 'lightgrey'
+      const circleFill = theme.palette.mode === 'dark' ? grey[900] : 'white'
+      const arrowColor = theme.palette.mode === 'dark' ? 'lightgrey' : 'black'
 
-  React.useEffect(() => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-    setContext(ctx)
-  }, [])
+      // Translate and rotate before drawing
+      ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2)
+      ctx.rotate(angle + Math.PI / 2)
 
-  React.useEffect(() => {
-    function drawArrow (ctx, thickness, color) {
-      ctx.fillStyle = color
-      ctx.strokeStyle = color
+      // Draw circle and arrow
+      drawCircle(ctx, ctx.canvas.width / 2 - 2, circleFill, circleStroke, 3)
+      drawArrow(ctx, 4, arrowColor)
+    },
+    [angle, theme.palette.mode]
+  )
 
-      const halfW = ctx.canvas.width / 2
-
-      // Main line of the arrow
-      ctx.beginPath()
-      ctx.moveTo(0, 0)
-      ctx.lineTo(halfW - 10, 0)
-      ctx.lineWidth = thickness
-      ctx.stroke()
-
-      // Arrowhead
-      const height = (16 * 1.73205080757) / 2
-
-      ctx.beginPath()
-      ctx.moveTo(halfW - 5, 0)
-      ctx.lineTo(halfW - 5 - height, 8)
-      ctx.lineTo(halfW - 5 - height, -8)
-      ctx.closePath()
-      ctx.fill()
-    }
-
-    if (context) {
-      context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-      context.save()
-
-      context.translate(context.canvas.width / 2, context.canvas.height / 2)
-
-      // Draw circle
-      context.strokeStyle = theme.palette.mode === 'dark' ? 'grey' : 'lightgrey'
-      context.lineWidth = 3
-      context.fillStyle = theme.palette.mode === 'dark' ? grey[900] : 'white'
-      context.beginPath()
-      context.arc(0, 0, context.canvas.width / 2 - 2, 0, 2 * Math.PI)
-      context.stroke()
-      context.fill()
-
-      context.rotate(angle + Math.PI / 2)
-      drawArrow(
-        context,
-        4,
-        theme.palette.mode === 'dark' ? 'lightgrey' : 'black'
-      )
-      context.restore()
-    }
-  }, [angle, context, theme.palette.mode])
+  const canvasRef = useCanvas(angleRender)
 
   return (
     <Stack {...rest}>

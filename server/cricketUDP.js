@@ -32,7 +32,7 @@ export function sendConfigMessage (message) {
         logSend.error('Client send error:')
         logSend.error(error)
       } else {
-        logSend(`Sent message: ${message.type}`)
+        logSend(`Sent message: ${message.messageType}`)
       }
       sendSocket.close()
     }

@@ -40,7 +40,8 @@ async function doBuild () {
     external: ['env'],
     loader: { '.woff': 'binary', '.woff2': 'binary' },
     minify: !_DEV_,
-    sourcemap: _DEV_
+    sourcemap: _DEV_,
+    logLevel: 'info'
   }
 
   if (_DEV_) {
@@ -56,20 +57,25 @@ async function doBuild () {
     if (_SERVE_) {
       await ctx.serve({
         servedir: 'public',
-        port: rawConfig.DEV_SERVER_PORT ? parseInt(rawConfig.DEV_SERVER_PORT) : 3000
+        port: rawConfig.DEV_SERVER_PORT
+          ? parseInt(rawConfig.DEV_SERVER_PORT)
+          : 3000
       })
     } else {
       await ctx.watch()
     }
   } else {
     // Do the build
-    esbuild.build(options).then(() => {
-      console.log('Build succeeded.')
-    }).catch((e) => {
-      console.error('Error building:')
-      console.error(e)
-      process.exit(1)
-    })
+    esbuild
+      .build(options)
+      .then(() => {
+        console.log('Build succeeded.')
+      })
+      .catch((e) => {
+        console.error('Error building:')
+        console.error(e)
+        process.exit(1)
+      })
   }
 }
 

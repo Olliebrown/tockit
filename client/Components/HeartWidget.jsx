@@ -4,74 +4,77 @@ import PropTypes from 'prop-types'
 import { Box } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
+import useCanvas from '../data/useCanvas.js'
+
 export default function HeartWidget ({
   filled = false,
+  bonus = false,
   quarters = 4,
-  width = 40,
-  height = 40,
+  scale = 40,
   ...rest
 }) {
-  const canvasRef = React.useRef(null)
-  const [context, setContext] = React.useState(null)
-
   const theme = useTheme()
+  const renderHeart = React.useCallback(
+    (ctx) => {
+      // Pick colors
+      const outlineColor =
+        theme.palette.mode === 'dark' ? 'lightgrey' : 'darkgrey'
+      let fillColor = theme.palette.mode === 'dark' ? 'darkred' : 'red'
+      if (bonus) {
+        fillColor = theme.palette.mode === 'dark' ? 'gold' : 'yellow'
+      }
 
-  React.useEffect(() => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-    setContext(ctx)
-  }, [])
-
-  React.useEffect(() => {
-    if (context) {
-      context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-      context.save()
-
-      context.font = '60px Roboto, sans-serif'
+      // Set font
+      ctx.font = `${Math.floor(ctx.canvas.width * 1.4)}px Roboto, sans-serif`
+      const textSize = ctx.measureText('♥')
+      const xBorder = (ctx.canvas.width - textSize.width) / 2
+      const yBorder = (ctx.canvas.height - textSize.actualBoundingBoxAscent) / 2
+      console.log('xBorder:', xBorder)
+      console.log('yBorder:', yBorder)
 
       // Filled Heart
       if (filled) {
-        context.fillStyle = theme.palette.mode === 'dark' ? 'darkred' : 'red'
-        context.fillText('♥', 2, context.canvas.height - 2)
+        ctx.fillStyle = fillColor
+        ctx.fillText('♥', xBorder, ctx.canvas.height - yBorder)
 
         // Quarter hearts
-        const halfWidth = context.canvas.width / 2
+        const halfWidth = ctx.canvas.width / 2
         for (let i = 0; i < 4 - quarters; i++) {
           switch (i) {
             case 0:
-              context.clearRect(halfWidth, 0, halfWidth, halfWidth)
+              ctx.clearRect(halfWidth, 0, halfWidth, halfWidth)
               break
 
             case 1:
-              context.clearRect(halfWidth, halfWidth, halfWidth, halfWidth)
+              ctx.clearRect(halfWidth, halfWidth, halfWidth, halfWidth)
               break
 
             case 2:
-              context.clearRect(0, halfWidth, halfWidth, halfWidth)
+              ctx.clearRect(0, halfWidth, halfWidth, halfWidth)
               break
           }
         }
       }
 
       // Heart outline
-      context.strokeStyle =
-        theme.palette.mode === 'dark' ? 'lightgrey' : 'darkgrey'
-      context.strokeText('♥', 2, context.canvas.height - 2)
+      ctx.strokeStyle = outlineColor
+      ctx.strokeText('♥', xBorder, ctx.canvas.height - yBorder)
+    },
+    [theme.palette.mode, bonus, filled, quarters]
+  )
 
-      context.restore()
-    }
-  }, [context, filled, theme.palette.mode, quarters])
-
+  const canvasRef = useCanvas(renderHeart)
   return (
     <Box textAlign={'center'} {...rest}>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas ref={canvasRef} width={scale} height={scale} />
     </Box>
   )
 }
 
 HeartWidget.propTypes = {
   filled: PropTypes.bool,
+  bonus: PropTypes.bool,
   quarters: PropTypes.number,
-  width: PropTypes.number,
+  scale: PropTypes.number,
   height: PropTypes.number
 }

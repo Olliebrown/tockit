@@ -9,7 +9,8 @@ export default function Monospaced ({ children, ...other }) {
       {...other}
       sx={{
         fontWeight: 400,
-        fontFamily: '"Roboto Mono", "Courier New", monospace'
+        fontFamily: '"Roboto Mono", "Courier New", monospace',
+        whiteSpace: 'pre'
       }}
     >
       {children}

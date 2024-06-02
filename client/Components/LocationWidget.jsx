@@ -16,7 +16,10 @@ import useVelocity from '../data/useVelocity.js'
 export default function LocationWidget ({ x = 0, y = 0, z = 0 }) {
   // Compute velocity from position
   const V = useVelocity(x, y, z)
+
   const lengthV = Math.sqrt(V.reduce((acc, v) => acc + v * v, 0))
+  const heightVel = V[2]
+  const xyVel = Math.sqrt(V[0] * V[0] + V[1] * V[1])
 
   return (
     <TableContainer component={Paper}>
@@ -30,7 +33,17 @@ export default function LocationWidget ({ x = 0, y = 0, z = 0 }) {
             </TableCell>
             <TableCell align="right">
               <Monospaced variant="h6" component="div">
-                {x.toFixed(3)}
+                {x.toFixed(3).padStart(9, ' ')}
+              </Monospaced>
+            </TableCell>
+            <TableCell component="th" scope="row">
+              <Typography variant="h6" component="div">
+                {'Speed:'}
+              </Typography>
+            </TableCell>
+            <TableCell align="right">
+              <Monospaced variant="h6" component="div">
+                {lengthV.toFixed(3).padStart(9, ' ')}
               </Monospaced>
             </TableCell>
           </TableRow>
@@ -43,7 +56,17 @@ export default function LocationWidget ({ x = 0, y = 0, z = 0 }) {
             </TableCell>
             <TableCell align="right">
               <Monospaced variant="h6" component="div">
-                {y.toFixed(3)}
+                {y.toFixed(3).padStart(9, ' ')}
+              </Monospaced>
+            </TableCell>
+            <TableCell component="th" scope="row">
+              <Typography variant="h6" component="div">
+                {'XY Speed:'}
+              </Typography>
+            </TableCell>
+            <TableCell align="right">
+              <Monospaced variant="h6" component="div">
+                {xyVel.toFixed(3).padStart(9, ' ')}
               </Monospaced>
             </TableCell>
           </TableRow>
@@ -56,20 +79,17 @@ export default function LocationWidget ({ x = 0, y = 0, z = 0 }) {
             </TableCell>
             <TableCell align="right">
               <Monospaced variant="h6" component="div">
-                {z.toFixed(3)}
+                {z.toFixed(3).padStart(9, ' ')}
               </Monospaced>
             </TableCell>
-          </TableRow>
-
-          <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
             <TableCell component="th" scope="row">
               <Typography variant="h6" component="div">
-                {'Speed:'}
+                {'Z Speed:'}
               </Typography>
             </TableCell>
             <TableCell align="right">
               <Monospaced variant="h6" component="div">
-                {lengthV.toFixed(3)}
+                {heightVel.toFixed(3).padStart(9, ' ')}
               </Monospaced>
             </TableCell>
           </TableRow>

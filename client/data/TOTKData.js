@@ -37,3 +37,12 @@ export const playerTransformData = {
   dataCount: 16,
   nsInterval: 33333333 // 1/30 second
 }
+
+export const havokMatrixData = {
+  nickname: 'currentHavokMatrix',
+  offsets: [0x45ba998, 0x60, 0x20, 0x18c0],
+  dataType: 'f32',
+  dataCount: 16,
+  isDynamic: true,
+  nsInterval: 33333333 // 1/30 second
+}
